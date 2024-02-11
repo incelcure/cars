@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-
 # Create your models here.
 
 class CarBrand(models.Model):
@@ -18,7 +17,7 @@ class Car(models.Model):
     model = models.CharField(max_length=255, verbose_name="Модель")
     description = models.CharField(verbose_name="Описание")
     mileage = models.IntegerField(default=0, verbose_name="Пробег")
-    user = models. ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.brand} - {self.model}"

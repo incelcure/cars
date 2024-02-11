@@ -1,4 +1,6 @@
+from django.contrib.auth import authenticate
 from django.forms import model_to_dict
+from django.http import JsonResponse
 from django_rest.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import generics, viewsets, mixins
 from rest_framework.decorators import action
@@ -6,25 +8,44 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import *
-from .permissions import IsAdminOrReadOnly
+from .permissions import *
 from .serializers import CarSerializer
 
 
 # Create your views here.
-class CarApiList(generics.ListCreateAPIView):
+class CarApiList(generics.ListAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
-    permission_classes = (IsAuthenticated,)
-    #permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = [IsAuthenticated & (IsRegularUser | IsAdminUser)]
+    # permission_classes = (IsAdminOrReadOnly,)
 
 
+class CarApiCreate(generics.CreateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = [IsAuthenticated & IsAdminUser]
 
+    # permission_class = (IsAuthenticated,)
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
-
-
-
+# class LoginView(APIView):
+#     def post(self, request):
+#         username = request.data.get('username')
+#         password = request.data.get('password')
+#
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             refresh = RefreshToken.for_user(user)
+#             return JsonResponse({
+#                 'refresh': str(refresh),
+#                 'access': str(refresh.access_token),
+#             })
+#         else:
+#             return JsonResponse({"error": "Invalid Credentials"}, status=400)
 
 # class CarViewSet(mixins.CreateModelMixin,
 #                  mixins.ListModelMixin,

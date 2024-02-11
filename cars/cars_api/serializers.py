@@ -12,16 +12,13 @@ class CarBrandSerializer(serializers.ModelSerializer):
         model = CarBrand
         fields = "__all__"
 
-# class CarModel:
-#     def __init__(self, model, description, mileage):
-#         self.model = model
-#         self.description = description
-#         self.mileage = mileage
+
 
 
 class CarSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Car
-        fields = "__all__"
+        exclude = ("created_by",)
+        # fields = "__all__"

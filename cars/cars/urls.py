@@ -15,23 +15,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-
 from cars_api.views import *
+from .yasg import urlpatterns as doc_urls
 from rest_framework import routers
 
 # router = routers.SimpleRouter()
 # router.register(r'car', CarApiList)
 
 urlpatterns = [
+    # url(r'^auth/', include('djoser.urls'))
     path('admin/', admin.site.urls),
-    path('api/drf-auth/', include('rest_framework.urls')),
+    # path('api/drf-auth/', include('rest_framework.urls')),
     path('api/cars/', CarApiList.as_view()),
+    path('api/add-new-cars/', CarApiCreate.as_view()),
+    # path('api/login/', LoginView.as_view()),
+
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/login/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
     # path('api/v1/', include(router.urls)),
     # path('api/v1/carlist/', CarViewSet.as_view({'get': 'list'})),
 ]
+
+urlpatterns += doc_urls
