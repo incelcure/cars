@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a Django REST Framework API designed to provide a robust and scalable backend service for managing user data and resources. It leverages the power of Django and DRF to offer a range of CRUD (Create, Read, Update, Delete) operations, along with advanced features such as role-based access control and token-based authentication.
+This project is a Django REST Framework API designed to provide a robust and scalable backend service for managing user data and resources. It leverages the power of Django and DRF to offer Create and Read operations, along with advanced features such as role-based access control and token-based authentication.
 
 Key features include:
 
